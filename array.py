@@ -97,6 +97,70 @@ class Array:
                 return [i, checked[comp]]
             checked[val] = i
 
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        size = 9
+        row_seen = [set() for _ in range(size)]
+        col_seen = [set() for _ in range(size)]
+        sub_seen = [set() for _ in range(size)]
+        for row_index in range(size):
+            rsub = row_index // 3
+            for column_index in range(size):
+                csub = column_index // 3
+
+                val = board[row_index][column_index]
+
+                if val == ".":
+                    continue
+
+                if val in row_seen[row_index]:
+                    return False
+                row_seen[row_index].add(val)
+
+                if val in col_seen[column_index]:
+                    return False
+                col_seen[column_index].add(val)
+
+                sub = rsub * 3 + csub
+                if val in sub_seen[sub]:
+                    return False
+                sub_seen[sub].add(val)
+
+        return True
+
+
+    def isValidSudoku2(self, board: List[List[str]]) -> bool:
+        size = 9
+        row_seen = [[0] * size for _ in range(size)]
+        col_seen = [[0] * size for _ in range(size)]
+        sub_seen = [[0] * size for _ in range(size)]
+        for row_index in range(size):
+            rsub = row_index // 3
+            for col_index in range(size):
+                csub = col_index // 3
+
+                if board[row_index][col_index] == ".":
+                    continue
+
+                pos = int(board[row_index][col_index]) - 1
+
+                if row_seen[row_index][pos] == 1:
+                    return False
+                row_seen[row_index][pos] = 1
+
+                if col_seen[col_index][pos] == 1:
+                    return False
+                col_seen[col_index][pos] = 1
+
+                sub_index = rsub * 3 + csub
+                if sub_seen[sub_index][pos] == 1:
+                    return False
+                sub_seen[sub_index][pos] = 1
+
+        return True
+
+
+
+
 
 def main():
     print(Array().addBinary("1110", "101101"))
